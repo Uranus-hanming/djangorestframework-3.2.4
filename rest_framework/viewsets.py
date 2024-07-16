@@ -63,7 +63,8 @@ class ViewSetMixin:
         """
         # The name and description initkwargs may be explicitly overridden for
         # certain route configurations. eg, names of extra actions.
-        cls.name = None
+        # 类级别的代码在类定义时执行，通常在模块加载时就执行了。在这个阶段，类对象本身已经被创建，并且这些类属性（如 name, description 等）已经在类对象上设置了默认值 None。
+        cls.name = None  # 此处是在类级别上执行的，而不是在实例级别上。
         cls.description = None
 
         # The suffix initkwarg is reserved for displaying the viewset type.
@@ -100,7 +101,8 @@ class ViewSetMixin:
                             "mutually exclusive arguments." % (cls.__name__))
 
         def view(request, *args, **kwargs):
-            self = cls(**initkwargs)
+            # 在实例化类对象时执行的代码，具体实例化发生在框架运行时动态创建视图时
+            self = cls(**initkwargs)  # 实例化类对象时执行的
 
             if 'get' in actions and 'head' not in actions:
                 actions['head'] = actions['get']
